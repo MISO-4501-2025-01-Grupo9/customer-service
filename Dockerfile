@@ -15,7 +15,7 @@ EXPOSE ${PORT}
 
 # Variables de entorno por defecto
 ENV DATABASE_URL=postgresql://myuser:mypass@db:5432/mydatabase
-ENV PORT=8087
+ENV PORT=8080
 ENV HOST=0.0.0.0
 ENV FLASK_ENV=production
 ENV SAFRS_API_DOCS_URL=/api/swagger.html
