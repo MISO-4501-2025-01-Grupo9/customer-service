@@ -9,6 +9,7 @@ class CustomerVisit(SAFRSBase, db.Model):
     salesperson_id = db.Column(db.Integer, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"), nullable=False)
     visit_date = db.Column(db.BigInteger, nullable=False)  # Se recomienda enviar Unix timestamp
+    status = db.Column(db.String(30), nullable=False, default="scheduled")
     notes = db.Column(db.Text)
     outcomes = db.Column(db.Text)
     created_at = db.Column(db.BigInteger, nullable=False, default=lambda: int(time.time()))
