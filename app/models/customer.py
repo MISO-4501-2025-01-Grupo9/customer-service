@@ -19,3 +19,4 @@ class Customer(SAFRSBase, db.Model):
     segment_assignments = db.relationship("CustomerSegmentAssignment", back_populates="customer",
                                           cascade="all, delete-orphan")
     visits = db.relationship("CustomerVisit", back_populates="customer", cascade="all, delete-orphan")
+    videos = db.relationship("CustomerVideo", back_populates="customer", cascade="all, delete-orphan")
