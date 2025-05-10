@@ -94,25 +94,25 @@ jobs:
         run: |
           REPO_LOWER=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
           if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            docker tag ghcr.io/${REPO_LOWER}:${{ steps.docker_tag.outputs.tag }} us-central1-docker.pkg.dev/misw4501/customer-service-repo/customer-service:latest
+            docker tag ghcr.io/${REPO_LOWER}:${{ steps.docker_tag.outputs.tag }} us-central1-docker.pkg.dev/misw4501/customer-repo/customer-service:latest
           else
-            docker tag ghcr.io/${REPO_LOWER}:${{ steps.docker_tag.outputs.tag }} us-central1-docker.pkg.dev/misw4501/customer-service-repo/customer-service:develop
+            docker tag ghcr.io/${REPO_LOWER}:${{ steps.docker_tag.outputs.tag }} us-central1-docker.pkg.dev/misw4501/customer-repo/customer-service:develop
           fi
 
       - name: Push Docker image to GCP
         run: |
           REPO_LOWER=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
           if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            docker push us-central1-docker.pkg.dev/misw4501/customer-service-repo/customer-service:latest
+            docker push us-central1-docker.pkg.dev/misw4501/customer-repo/customer-service:latest
           else
-            docker push us-central1-docker.pkg.dev/misw4501/customer-service-repo/customer-service:develop
+            docker push us-central1-docker.pkg.dev/misw4501/customer-repo/customer-service:develop
           fi
 
       - name: Update Cloud Run Service
         if: github.ref == 'refs/heads/main'
         run: |
           gcloud run services update customer-service \
-            --image=us-central1-docker.pkg.dev/misw4501/customer-service-repo/customer-service:latest \
+            --image=us-central1-docker.pkg.dev/misw4501/customer-repo/customer-service:latest \
             --region=us-central1 \
             --platform=managed
 
