@@ -56,6 +56,28 @@ jobs:
           name: test-coverage-results
           path: htmlcov/*
 
+      - name: Set SonarCloud variables
+        id: sonar
+        run: |
+          echo "organization=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.python.xunit.reportPath=test-results.xml
+            -Dsonar.projectKey=${{ steps.sonar.outputs.projectKey }}
+            -Dsonar.organization=${{ steps.sonar.outputs.organization }}
+            -Dsonar.coverage.exclusions=**/app/__init__.py,**/app/models/__init__.py,**/app/controllers/__init__.py
+            -Dsonar.test.inclusions=**/test_*.py
+            -Dsonar.sources=app
+            -Dsonar.tests=tests
+
       - name: Set Docker Tag
         id: docker_tag
         run: |
