@@ -48,13 +48,16 @@ jobs:
         run: |
           coverage run --source=app -m pytest
           coverage report -m
+          coverage xml
           coverage html
 
       - name: Upload Coverage Test Results
         uses: actions/upload-artifact@v4
         with:
           name: test-coverage-results
-          path: htmlcov/*
+          path: |
+            htmlcov/*
+            coverage.xml
 
       - name: Set SonarCloud variables
         id: sonar
@@ -73,7 +76,7 @@ jobs:
             -Dsonar.python.xunit.reportPath=test-results.xml
             -Dsonar.projectKey=${{ steps.sonar.outputs.projectKey }}
             -Dsonar.organization=${{ steps.sonar.outputs.organization }}
-            -Dsonar.coverage.exclusions=**/app/__init__.py,**/app/models/__init__.py,**/app/controllers/__init__.py
+            -Dsonar.coverage.exclusions=**/__init__.py
             -Dsonar.test.inclusions=**/test_*.py
             -Dsonar.sources=app
             -Dsonar.tests=tests
